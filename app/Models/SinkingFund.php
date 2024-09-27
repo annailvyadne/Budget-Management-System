@@ -14,7 +14,6 @@ class SinkingFund extends Model
 
     // Define which attributes can be mass assigned
     protected $fillable = [
-        'user_id',
         'fund_name',
         'target_amount',
         'current_amount',

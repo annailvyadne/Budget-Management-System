@@ -2,63 +2,68 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\SinkingFund;
 use Illuminate\Http\Request;
 
 class SinkingFundController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    // Show all sinking funds
     public function index()
     {
-        //
+        $funds = SinkingFund::all();
+        return view('funds.index', compact('funds'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+    // Show form to create a sinking fund
     public function create()
     {
-        //
+        return view('funds.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    // Store a new sinking fund
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'fund_name' => 'required|string|max:255',
+            'target_amount' => 'required|numeric',
+            'current_amount' => 'required|numeric',
+            'due_date' => 'required|date',
+        ]);
+
+        SinkingFund::create($validated);
+
+        return redirect()->route('funds.index')->with('success', 'Sinking Fund created successfully.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    // Show form to edit a sinking fund
+    public function edit($id)
     {
-        //
+        $fund = SinkingFund::findOrFail($id);
+        return view('funds.edit', compact('fund'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    // Update an existing sinking fund
+    public function update(Request $request, $id)
     {
-        //
+        $validated = $request->validate([
+            'fund_name' => 'required|string|max:255',
+            'target_amount' => 'required|numeric',
+            'current_amount' => 'required|numeric',
+            'due_date' => 'required|date',
+        ]);
+
+        $fund = SinkingFund::findOrFail($id);
+        $fund->update($validated);
+
+        return redirect()->route('funds.index')->with('success', 'Sinking Fund updated successfully.');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    // Delete a sinking fund
+    public function destroy($id)
     {
-        //
-    }
+        $fund = SinkingFund::findOrFail($id);
+        $fund->delete();
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return redirect()->route('funds.index')->with('success', 'Sinking Fund deleted successfully.');
     }
 }

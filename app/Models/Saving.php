@@ -14,7 +14,6 @@ class Saving extends Model
 
     // Define which attributes can be mass assigned
     protected $fillable = [
-        'user_id',
         'amount',
         'goal_name',
         'goal_amount',

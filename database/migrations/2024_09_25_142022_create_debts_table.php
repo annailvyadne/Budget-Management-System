@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('debts', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
             $table->string('debt_name');
             $table->decimal('principal_amount', 15, 2);
             $table->decimal('remaining_amount', 15, 2);
@@ -22,7 +21,6 @@ return new class extends Migration
             $table->date('due_date');
             $table->timestamps();
 
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

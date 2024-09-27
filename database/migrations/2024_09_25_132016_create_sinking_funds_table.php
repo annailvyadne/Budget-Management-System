@@ -13,14 +13,12 @@ return new class extends Migration
     {
         Schema::create('sinking_funds', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
             $table->string('fund_name');
             $table->decimal('target_amount', 15, 2);
             $table->decimal('current_amount', 15, 2)->default(0);
             $table->date('due_date');
             $table->timestamps();
 
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

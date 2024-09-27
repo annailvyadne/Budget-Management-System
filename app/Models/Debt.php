@@ -14,7 +14,6 @@ class Debt extends Model
 
     // Define which attributes can be mass assigned
     protected $fillable = [
-        'user_id',
         'debt_name',
         'principal_amount',
         'remaining_amount',

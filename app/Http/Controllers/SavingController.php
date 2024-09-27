@@ -2,63 +2,68 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Saving;
 use Illuminate\Http\Request;
 
 class SavingController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    // Show all savings
     public function index()
     {
-        //
+        $savings = Saving::all();
+        return view('savings.index', compact('savings'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+    // Show form to create a saving
     public function create()
     {
-        //
+        return view('savings.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    // Store a new saving
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'amount' => 'required|numeric',
+            'goal_name' => 'nullable|string',
+            'goal_amount' => 'nullable|numeric',
+            'saved_date' => 'required|date',
+        ]);
+
+        Saving::create($validated);
+
+        return redirect()->route('savings.index')->with('success', 'Saving added successfully.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    // Show form to edit a saving
+    public function edit($id)
     {
-        //
+        $saving = Saving::findOrFail($id);
+        return view('savings.edit', compact('saving'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    // Update an existing saving
+    public function update(Request $request, $id)
     {
-        //
+        $validated = $request->validate([
+            'amount' => 'required|numeric',
+            'goal_name' => 'nullable|string',
+            'goal_amount' => 'nullable|numeric',
+            'saved_date' => 'required|date',
+        ]);
+
+        $saving = Saving::findOrFail($id);
+        $saving->update($validated);
+
+        return redirect()->route('savings.index')->with('success', 'Saving updated successfully.');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    // Delete a saving
+    public function destroy($id)
     {
-        //
-    }
+        $saving = Saving::findOrFail($id);
+        $saving->delete();
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return redirect()->route('savings.index')->with('success', 'Saving deleted successfully.');
     }
 }
